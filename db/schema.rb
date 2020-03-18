@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_03_17_212918) do
+ActiveRecord::Schema.define(version: 2020_03_18_002639) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2020_03_17_212918) do
     t.bigint "item_id", null: false
     t.bigint "invoice_id", null: false
     t.integer "quantity"
-    t.integer "unit_price"
+    t.float "unit_price"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["invoice_id"], name: "index_invoice_items_on_invoice_id"
@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 2020_03_17_212918) do
     t.bigint "merchant_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "status"
     t.index ["customer_id"], name: "index_invoices_on_customer_id"
     t.index ["merchant_id"], name: "index_invoices_on_merchant_id"
   end
@@ -45,7 +46,7 @@ ActiveRecord::Schema.define(version: 2020_03_17_212918) do
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.string "description"
-    t.integer "unit_price"
+    t.float "unit_price"
     t.bigint "merchant_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
