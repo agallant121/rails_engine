@@ -31,7 +31,7 @@ describe "Items API" do
 
     merchant_params = { name: "Front Row Video"}
 
-    post "/api/v1/merchants", params: {merchant: merchant_params}
+    post "/api/v1/merchants", params: merchant_params
     merchant = Merchant.last
 
     expect(response).to be_successful
@@ -43,7 +43,7 @@ describe "Items API" do
     previous_name = Merchant.last.name
     merchant_params = { name: "Front Row Video" }
 
-    put "/api/v1/merchants/#{id}", params: {merchant: merchant_params}
+    put "/api/v1/merchants/#{id}", params: merchant_params
     merchant = Merchant.find_by(id: id)
 
     expect(response).to be_successful
