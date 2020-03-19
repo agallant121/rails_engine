@@ -24,7 +24,7 @@ describe "Items API" do
     item = JSON.parse(response.body)['data']
 
     expect(response).to be_successful
-    expect(item["id"].to_i).to eq(id) #why did i have to do a .to_i?
+    expect(item["id"].to_i).to eq(id)
   end
 
   it "can create a new item" do
