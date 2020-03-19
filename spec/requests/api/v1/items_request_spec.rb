@@ -4,7 +4,7 @@ describe "Items API" do
   before :each do
     Item.destroy_all
   end
-  
+
   it "sends a list of items" do
     create_list(:item, 3)
 
@@ -25,5 +25,20 @@ describe "Items API" do
 
     expect(response).to be_successful
     expect(item["id"].to_i).to eq(id) #why did i have to do a .to_i?
+  end
+
+  it "can create a new item" do
+    merchant = create(:merchant)
+
+    item_params = { name: "Saw",
+                    description: "I want to play a game",
+                    unit_price: 50.55,
+                    merchant_id: merchant.id }
+
+    post "/api/v1/items", params: {item: item_params}
+    item = Item.last
+
+    expect(response).to be_successful
+    expect(item.name).to eq(item_params[:name])
   end
 end
