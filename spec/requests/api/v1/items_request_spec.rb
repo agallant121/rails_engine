@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe "Items API" do
+  before :each do
+    Item.destroy_all
+  end
+  
   it "sends a list of items" do
     create_list(:item, 3)
 
@@ -17,9 +21,9 @@ describe "Items API" do
 
     get "/api/v1/items/#{id}"
 
-    item = JSON.parse(response.body)
+    item = JSON.parse(response.body)['data']
 
     expect(response).to be_successful
-    expect(item["id"]).to eq(id)
+    expect(item["id"].to_i).to eq(id) #why did i have to do a .to_i?
   end
 end
