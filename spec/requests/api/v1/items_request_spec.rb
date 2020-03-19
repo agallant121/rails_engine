@@ -24,7 +24,7 @@ describe "Items API" do
     item = JSON.parse(response.body)['data']
 
     expect(response).to be_successful
-    expect(item["id"].to_i).to eq(id) #why did i have to do a .to_i?
+    expect(item["id"].to_i).to eq(id)
   end
 
   it "can create a new item" do
@@ -53,5 +53,17 @@ describe "Items API" do
     expect(response).to be_successful
     expect(item.name).to_not eq(previous_name)
     expect(item.name).to eq("Sledge")
+  end
+
+  it "can destroy an item" do
+    item = create(:item)
+
+    expect(Item.count).to eq(1)
+
+    delete "/api/v1/items/#{item.id}"
+
+    expect(response).to be_successful
+    expect(Item.count).to eq(0)
+    expect{Item.find(item.id)}.to raise_error(ActiveRecord::RecordNotFound)
   end
 end
