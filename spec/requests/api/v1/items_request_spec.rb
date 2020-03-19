@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe "Items API" do
+  before :each do
+    Item.destroy_all
+  end
+  
   it "sends a list of items" do
     create_list(:item, 3)
 
