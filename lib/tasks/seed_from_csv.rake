@@ -14,12 +14,16 @@ namespace :seed_from_csv do
       Merchant.create(row.to_h)
     end
 
+    ActiveRecord::Base.connection.execute('ALTER SEQUENCE merchants_id_seq RESTART WITH 101')
+
     puts "Importing Items"
 
 
     CSV.foreach('./db/data/items.csv', headers: true, header_converters: :symbol, converters: :all) do |row|
       Item.create(row.to_h)
     end
+
+    ActiveRecord::Base.connection.execute('ALTER SEQUENCE items_id_seq RESTART WITH 2484')
 
     puts "Importing Customers"
 
