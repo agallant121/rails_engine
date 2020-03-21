@@ -83,10 +83,9 @@ describe "Items API" do
 
     get "/api/v1/merchants/find?name=#{merchant_1.name}"
 
-    merchant = JSON.parse(response.body)
+    merchant = JSON.parse(response.body)['data']
 
     expect(response).to be_successful
-    # require "pry"; binding.pry
-    expect(merchant["data"]["id"].to_i).to eq(merchant_1.id)
+    expect(merchant['attributes']['name']).to eq(merchant_1.name)
   end
 end
