@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+      namespace :items do
+        get "/find", to: "find#show"
+      end
       resources :items, except: [:new, :edit] do
         scope module: 'items' do
           get "/merchant", to: "merchants#show"
@@ -11,7 +14,7 @@ Rails.application.routes.draw do
       end
       resources :merchants, except: [:new, :edit] do
         scope module: 'merchants' do
-          get "/items", to: 'items#index'
+          get '/items', to: 'items#index'
         end
       end
     end
