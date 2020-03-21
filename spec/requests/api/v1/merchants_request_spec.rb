@@ -86,7 +86,7 @@ describe "Items API" do
     merchant = JSON.parse(response.body)['data']
 
     expect(response).to be_successful
-    expect(merchant['attributes']['name']).to eq(merchant_1.name)
+    expect(merchant[0]['attributes']['name']).to eq(merchant_1.name)
   end
 
   it "can find one merchant by id endpoint" do
@@ -97,12 +97,12 @@ describe "Items API" do
     merchant = JSON.parse(response.body)['data']
 
     expect(response).to be_successful
-    expect(merchant['id'].to_i).to eq(merchant_1.id)
+    expect(merchant[0]['id'].to_i).to eq(merchant_1.id)
   end
 
   it "can find one merchant by created_at endpoint" do
     merchant_1 = create(:merchant, created_at: '2012-03-27 14:53:59 UTC')
-
+    # why would I need to specify timestamp here when it is already created?
     get "/api/v1/merchants/find?created_at=#{merchant_1.created_at}"
 
     merchant = JSON.parse(response.body)['data']
@@ -111,7 +111,6 @@ describe "Items API" do
     expect(merchant.keys).to include('id')
     expect(merchant['attributes'].keys).to include('name')
     expect(merchant['attributes'].keys).to_not include('created_at')
-    # expect(merchant['attributes']['created_at']).to eq(merchant_1.created_at)
   end
 
   it "can find one merchant by updated_at endpoint" do
@@ -122,18 +121,18 @@ describe "Items API" do
     merchant = JSON.parse(response.body)['data']
 
     expect(response).to be_successful
-    expect(merchant.keys).to include('id')
-    expect(merchant['attributes'].keys).to include('name')
-    expect(merchant['attributes'].keys).to_not include('updated_at')
+    expect(merchant[0].keys).to include('id')
+    expect(merchant[0]['attributes'].keys).to include('name')
+    expect(merchant[0]['attributes'].keys).to_not include('updated_at')
   end
 
-  # it "can find partial matches" do
-  #   merchant_1 = create(:merchant)
-  #
-  #   get "/api/v1/merchants/find?name=ana"
-  #
-  #   merchant = JSON.parse(response.body)['data']
-  #   require "pry"; binding.pry
-  #   expect(merchant[0]['name']).to eq(merchant_1.name)
-  # end
+  it "can find partial matches" do
+    merchant_1 = create(:merchant, name: "Banana Stand")
+
+    get "/api/v1/merchants/find?name=ana"
+
+    merchant = JSON.parse(response.body)['data']
+
+    expect(merchant[0]['attributes']['name']).to eq(merchant_1.name)
+  end
 end
