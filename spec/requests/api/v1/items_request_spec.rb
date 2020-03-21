@@ -79,4 +79,16 @@ describe "Items API" do
     expect(response).to be_successful
     expect(merchant[:id]).to eq(merchant_1.id.to_s)
   end
+
+  it "can find one item by name param" do
+    item_1 = create(:item)
+
+    get "/api/v1/items/find?name=#{item_1.name}"
+
+    item = JSON.parse(response.body)["data"]
+
+    expect(response).to be_successful
+    # require "pry"; binding.pry
+    expect(item["attributes"]['name']).to eq(item_1.name)
+  end
 end
