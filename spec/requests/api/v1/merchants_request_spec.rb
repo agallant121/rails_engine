@@ -78,7 +78,7 @@ describe "Items API" do
     expect(items.count).to eq(3)
   end
 
-  it "can find one merchant by name param" do
+  it "can find one merchant by name endpoint" do
     merchant_1 = create(:merchant)
 
     get "/api/v1/merchants/find?name=#{merchant_1.name}"
@@ -87,5 +87,16 @@ describe "Items API" do
 
     expect(response).to be_successful
     expect(merchant['attributes']['name']).to eq(merchant_1.name)
+  end
+
+  it "can find one merchant by id endpoint" do
+    merchant_1 = create(:merchant)
+
+    get "/api/v1/merchants/find?id=#{merchant_1.id}"
+
+    merchant = JSON.parse(response.body)['data']
+
+    expect(response).to be_successful
+    expect(merchant['id'].to_i).to eq(merchant_1.id)
   end
 end
