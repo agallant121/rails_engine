@@ -86,7 +86,7 @@ describe "Items API" do
     get "/api/v1/items/find?name=#{item_1.name}"
 
     item = JSON.parse(response.body)["data"]
-    
+
     expect(response).to be_successful
     expect(item["attributes"]['name']).to eq(item_1.name)
   end
@@ -97,7 +97,7 @@ describe "Items API" do
     get "/api/v1/items/find?description=#{item_1.description}"
 
     item = JSON.parse(response.body)["data"]
-    
+
     expect(response).to be_successful
     expect(item["attributes"]['description']).to eq(item_1.description)
   end
@@ -108,7 +108,7 @@ describe "Items API" do
     get "/api/v1/items/find?unit_price=#{item_1.unit_price}"
 
     item = JSON.parse(response.body)["data"]
-    
+
     expect(response).to be_successful
     expect(item["attributes"]['unit_price']).to eq(item_1.unit_price)
   end
@@ -119,8 +119,35 @@ describe "Items API" do
     get "/api/v1/items/find?id=#{item_1.id}"
 
     item = JSON.parse(response.body)["data"]
-    
+
     expect(response).to be_successful
     expect(item['id'].to_i).to eq(item_1.id)
+  end
+
+  it "can find one item by created_at endpoint" do
+    item_1 = create(:item, created_at: '2012-03-27 14:53:59 UTC')
+
+    get "/api/v1/items/find?created_at=#{item_1.created_at}"
+
+    item = JSON.parse(response.body)['data']
+
+    expect(response).to be_successful
+    expect(item.keys).to include('id')
+    expect(item['attributes'].keys).to include('name')
+    expect(item['attributes'].keys).to_not include('created_at')
+    # expect(item['attributes']['created_at']).to eq(merchant_1.created_at)
+  end
+
+  it "can find one item by updated_at endpoint" do
+    item_1 = create(:item, updated_at: '2012-03-27 14:53:59 UTC')
+
+    get "/api/v1/items/find?updated_at=#{item_1.updated_at}"
+
+    item = JSON.parse(response.body)['data']
+
+    expect(response).to be_successful
+    expect(item.keys).to include('id')
+    expect(item['attributes'].keys).to include('name')
+    expect(item['attributes'].keys).to_not include('updated_at')
   end
 end
