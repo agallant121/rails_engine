@@ -134,6 +134,8 @@ describe "Items API" do
     expect(response).to be_successful
     expect(item.keys).to include('id')
     expect(item['attributes'].keys).to include('name')
+    expect(item['attributes'].keys).to include('description')
+    expect(item['attributes'].keys).to include('unit_price')
     expect(item['attributes'].keys).to_not include('created_at')
     # expect(item['attributes']['created_at']).to eq(merchant_1.created_at)
   end
@@ -148,6 +150,8 @@ describe "Items API" do
     expect(response).to be_successful
     expect(item.keys).to include('id')
     expect(item['attributes'].keys).to include('name')
+    expect(item['attributes'].keys).to include('description')
+    expect(item['attributes'].keys).to include('unit_price')
     expect(item['attributes'].keys).to_not include('updated_at')
   end
 end
