@@ -88,7 +88,7 @@ describe "Items API" do
     item = JSON.parse(response.body)["data"]
 
     expect(response).to be_successful
-    expect(item["attributes"]['name']).to eq(item_1.name)
+    expect(item[0]["attributes"]['name']).to eq(item_1.name)
   end
 
   it "can find one item by description param" do
@@ -99,7 +99,7 @@ describe "Items API" do
     item = JSON.parse(response.body)["data"]
 
     expect(response).to be_successful
-    expect(item["attributes"]['description']).to eq(item_1.description)
+    expect(item[0]["attributes"]['description']).to eq(item_1.description)
   end
 
   it "can find one item by unit price param" do
@@ -110,7 +110,7 @@ describe "Items API" do
     item = JSON.parse(response.body)["data"]
 
     expect(response).to be_successful
-    expect(item["attributes"]['unit_price']).to eq(item_1.unit_price)
+    expect(item[0]["attributes"]['unit_price']).to eq(item_1.unit_price)
   end
 
   it "can find one item by id param" do
@@ -121,7 +121,7 @@ describe "Items API" do
     item = JSON.parse(response.body)["data"]
 
     expect(response).to be_successful
-    expect(item['id'].to_i).to eq(item_1.id)
+    expect(item[0]['id'].to_i).to eq(item_1.id)
   end
 
   it "can find one item by created_at endpoint" do
@@ -146,12 +146,21 @@ describe "Items API" do
     get "/api/v1/items/find?updated_at=#{item_1.updated_at}"
 
     item = JSON.parse(response.body)['data']
-
+    
     expect(response).to be_successful
-    expect(item.keys).to include('id')
-    expect(item['attributes'].keys).to include('name')
-    expect(item['attributes'].keys).to include('description')
-    expect(item['attributes'].keys).to include('unit_price')
-    expect(item['attributes'].keys).to_not include('updated_at')
+    expect(item[0].keys).to include('id')
+    expect(item[0]['attributes'].keys).to include('name')
+    expect(item[0]['attributes'].keys).to include('description')
+    expect(item[0]['attributes'].keys).to include('unit_price')
+    expect(item[0]['attributes'].keys).to_not include('updated_at')
+  end
+
+  it "can find partial matches" do
+    item_1 = create(:item, name: "Banana Stand")
+
+    get "/api/v1/items/find?name=ana"
+
+    item = JSON.parse(response.body)['data']
+    expect(item[0]['attributes']['name']).to eq(item_1.name)
   end
 end
