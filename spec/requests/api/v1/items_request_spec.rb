@@ -86,9 +86,41 @@ describe "Items API" do
     get "/api/v1/items/find?name=#{item_1.name}"
 
     item = JSON.parse(response.body)["data"]
-
+    
     expect(response).to be_successful
-    # require "pry"; binding.pry
     expect(item["attributes"]['name']).to eq(item_1.name)
+  end
+
+  it "can find one item by description param" do
+    item_1 = create(:item)
+
+    get "/api/v1/items/find?description=#{item_1.description}"
+
+    item = JSON.parse(response.body)["data"]
+    
+    expect(response).to be_successful
+    expect(item["attributes"]['description']).to eq(item_1.description)
+  end
+
+  it "can find one item by unit price param" do
+    item_1 = create(:item)
+
+    get "/api/v1/items/find?unit_price=#{item_1.unit_price}"
+
+    item = JSON.parse(response.body)["data"]
+    
+    expect(response).to be_successful
+    expect(item["attributes"]['unit_price']).to eq(item_1.unit_price)
+  end
+
+  it "can find one item by id param" do
+    item_1 = create(:item)
+
+    get "/api/v1/items/find?id=#{item_1.id}"
+
+    item = JSON.parse(response.body)["data"]
+    
+    expect(response).to be_successful
+    expect(item['id'].to_i).to eq(item_1.id)
   end
 end
