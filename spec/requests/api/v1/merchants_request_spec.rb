@@ -108,7 +108,6 @@ describe "Items API" do
     merchant = JSON.parse(response.body)['data']
 
     expect(response).to be_successful
-    # require "pry"; binding.pry
     expect(merchant.keys).to include('id')
     expect(merchant['attributes'].keys).to include('name')
     expect(merchant['attributes'].keys).to_not include('created_at')
@@ -126,7 +125,6 @@ describe "Items API" do
     expect(merchant.keys).to include('id')
     expect(merchant['attributes'].keys).to include('name')
     expect(merchant['attributes'].keys).to_not include('updated_at')
-    # expect(merchant['attributes']['updated_at']).to eq(merchant_1.updated_at)
   end
 
   # it "can find partial matches" do
