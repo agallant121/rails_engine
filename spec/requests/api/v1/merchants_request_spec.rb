@@ -24,7 +24,7 @@ describe "Items API" do
     merchant = JSON.parse(response.body)['data']
 
     expect(response).to be_successful
-    expect(merchant["id"].to_i).to eq(id) #why did i have to do a .to_i?
+    expect(merchant["id"].to_i).to eq(id)
   end
 
   it "can create a new merchant" do
@@ -74,8 +74,19 @@ describe "Items API" do
 
     items = JSON.parse(response.body, symbolize_names: true)[:data]
 
-    # require "pry"; binding.pry
     expect(response).to be_successful
     expect(items.count).to eq(3)
+  end
+
+  it "can find one merchant by name param" do
+    merchant_1 = create(:merchant)
+
+    get "/api/v1/merchants/find?name=#{merchant_1.name}"
+
+    merchant = JSON.parse(response.body)
+
+    expect(response).to be_successful
+    # require "pry"; binding.pry
+    expect(merchant["data"]["id"].to_i).to eq(merchant_1.id)
   end
 end
