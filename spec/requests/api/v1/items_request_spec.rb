@@ -146,7 +146,7 @@ describe "Items API" do
     get "/api/v1/items/find?updated_at=#{item_1.updated_at}"
 
     item = JSON.parse(response.body)['data']
-    
+
     expect(response).to be_successful
     expect(item[0].keys).to include('id')
     expect(item[0]['attributes'].keys).to include('name')
@@ -162,5 +162,19 @@ describe "Items API" do
 
     item = JSON.parse(response.body)['data']
     expect(item[0]['attributes']['name']).to eq(item_1.name)
+  end
+
+  it 'can find all item names by string fragment' do
+    item_1 = create(:item, name: "Banana Stand")
+    item_2 = create(:item, name: "ananaB Dnats")
+
+    get "/api/v1/items/find_all?name=ana"
+
+    items = JSON.parse(response.body)['data']
+
+    expect(response).to be_successful
+    expect(items.count).to eq(2)
+    expect(items.first['attributes']['name']).to eq(item_1.name)
+    expect(items.last['attributes']['name']).to eq(item_2.name)
   end
 end
