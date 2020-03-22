@@ -4,6 +4,15 @@ class Api::V1::Merchants::FindController < ApplicationController
     render_this
   end
 
+  def index
+    if find_params[:name]
+      # require "pry"; binding.pry
+      render json: MerchantSerializer.new(Merchant.where("name like ?", "%#{params['name']}%"))
+    else
+      render json: MerchantSerializer.new(Merchant.where(find_params))
+    end
+  end
+
   private
 
    def find_params
