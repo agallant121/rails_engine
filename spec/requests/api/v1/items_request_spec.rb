@@ -167,14 +167,16 @@ describe "Items API" do
   it 'can find all item names by string fragment' do
     item_1 = create(:item, name: "Banana Stand")
     item_2 = create(:item, name: "ananaB Dnats")
+    item_3 = create(:item, name: "Cabana Donuts")
 
     get "/api/v1/items/find_all?name=ana"
 
     items = JSON.parse(response.body)['data']
 
     expect(response).to be_successful
-    expect(items.count).to eq(2)
+    expect(items.count).to eq(3)
     expect(items.first['attributes']['name']).to eq(item_1.name)
-    expect(items.last['attributes']['name']).to eq(item_2.name)
+    expect(items.second['attributes']['name']).to eq(item_2.name)
+    expect(items.last['attributes']['name']).to eq(item_3.name)
   end
 end
