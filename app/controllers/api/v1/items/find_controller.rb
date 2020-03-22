@@ -3,7 +3,15 @@ class Api::V1::Items::FindController < ApplicationController
   def show
     render_this
   end
-  
+
+  def index
+    if find_params[:name]
+      render json: ItemSerializer.new(Item.where("name like ?", "%#{params['name']}%"))
+    else
+      render json: ItemSerializer.new(Item.where(find_params))
+    end
+  end
+
   private
 
   def find_params
