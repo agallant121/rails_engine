@@ -143,7 +143,7 @@ describe "Items API" do
     get "/api/v1/merchants/find_all?name=aldo"
 
     merchants = JSON.parse(response.body)['data']
-    
+
     expect(response).to be_successful
     expect(merchants.count).to eq(2)
     expect(merchants.first['attributes']['name']).to eq(merchant_1.name)
