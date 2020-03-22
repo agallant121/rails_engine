@@ -135,4 +135,18 @@ describe "Items API" do
 
     expect(merchant[0]['attributes']['name']).to eq(merchant_1.name)
   end
+
+  it 'can find all merchant records by string fragment' do
+    merchant_1 = create(:merchant, name: "aldo")
+    merchant_2 = create(:merchant, name: "Waldo")
+
+    get "/api/v1/merchants/find_all?name=aldo"
+
+    merchants = JSON.parse(response.body)['data']
+    
+    expect(response).to be_successful
+    expect(merchants.count).to eq(2)
+    expect(merchants.first['attributes']['name']).to eq(merchant_1.name)
+    expect(merchants.last['attributes']['name']).to eq(merchant_2.name)
+  end
 end
