@@ -22,6 +22,7 @@ class Api::V1::Items::FindController < ApplicationController
     if params.include?('created_at' || 'updated_at')
       render json: ItemSerializer.new(Item.find_by(find_params))
     else
+      find_params[:name] || find_params[:description]
       items =  Item.where("name like ?", "%#{params['name']}%")
       render json: ItemSerializer.new(items)
     end

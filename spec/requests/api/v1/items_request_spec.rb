@@ -155,13 +155,27 @@ describe "Items API" do
     expect(item[0]['attributes'].keys).to_not include('updated_at')
   end
 
-  it "can find partial matches" do
+  it "can find partial matches for name" do
     item_1 = create(:item, name: "Banana Stand")
 
     get "/api/v1/items/find?name=ana"
 
     item = JSON.parse(response.body)['data']
     expect(item[0]['attributes']['name']).to eq(item_1.name)
+  end
+
+  xit "can find multiple attributes" do
+    item_1 = create(:item, name: "banana", unit_price: 12.34)
+    item_2 = create(:item, name: "bananas", unit_price: 50.05)
+
+    get "/api/v1/items/find?name=banana&unit_price=12.34"
+
+    item = JSON.parse(response.body)['data']
+    # require "pry"; binding.pry
+    expect(item.count).to eq(1)
+    expect(item[0]['attributes']['name']).to eq(item_1.name)
+    expect(item[0]['attributes']['unit_price']).to eq(item_1.unit_price)
+    expect(item[0]['attributes']['unit_price']).to eq(item_1.unit_price)
   end
 
   it 'can find all item names by string fragment' do
@@ -178,5 +192,20 @@ describe "Items API" do
     expect(items.first['attributes']['name']).to eq(item_1.name)
     expect(items.second['attributes']['name']).to eq(item_2.name)
     expect(items.last['attributes']['name']).to eq(item_3.name)
+  end
+
+  it 'can find all items with same attribute values' do
+    item_1 = create(:item, unit_price: 55.12)
+    item_2 = create(:item, unit_price: 55.12)
+    item_3 = create(:item, unit_price: 75.47)
+
+    get "/api/v1/items/find_all?unit_price=55.12"
+
+    items = JSON.parse(response.body)['data']
+    # Why does this work for unit_price?
+    expect(response).to be_successful
+    expect(items.count).to eq(2)
+    expect(items.first['attributes']['unit_price']).to eq(item_1.unit_price)
+    expect(items.second['attributes']['unit_price']).to eq(item_2.unit_price)
   end
 end
